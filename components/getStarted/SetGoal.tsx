@@ -30,14 +30,14 @@ const SetGoal = () => {
 
 
     if (file.type !== 'application/pdf') {
-      alert('Please upload a PDF file only');
+      toast.warning('Please upload a PDF file only');
       e.target.value = '';
       return;
     }
 
     const maxSize = 10 * 1024 * 1024; 
     if (file.size > maxSize) {
-      alert('File is too large. Please upload a PDF smaller than 10MB.');
+      toast.warning('File is too large. Please upload a PDF smaller than 10MB.');
       e.target.value = '';
       return;
     }
@@ -58,11 +58,11 @@ const SetGoal = () => {
 
       setUploadProgress('Complete!');
       
-      console.log('PDF parsed successfully:', {
-        pages: parsed.metadata.totalPages,
-        words: parsed.metadata.totalWords,
-        chapters: parsed.chapters.length,
-      });
+    //   console.log('PDF parsed successfully:', {
+    //     pages: parsed.metadata.totalPages,
+    //     words: parsed.metadata.totalWords,
+    //     chapters: parsed.chapters.length,
+    //   });
 
       const suggestedGoal = Math.min(1000, Math.floor(parsed.metadata.totalWords * 0.1));
       setWordGoal(suggestedGoal.toString());
@@ -128,7 +128,7 @@ const SetGoal = () => {
 
         <button
           onClick={loadDummyData}
-          className="mt-3 px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors text-sm w-full"
+          className="mt-3 px-4 py-3 rounded-lg transition-all duration-200 bg-linear-to-br from-[#5F5DFC] to-[#B840F9] text-white hover:opacity-90 hover:font-bold text-sm w-full"
           disabled={isUploading}
         >
           Use Sample Data (for testing)
@@ -186,8 +186,8 @@ const SetGoal = () => {
         </div>
       )}
 
-      <div className="flex flex-col gap-4 mb-6">
-        <div className="w-full">
+      <div className="flex justify-between items-center mb-6">
+        <div className="w-full lg:w-[48%] md:w-[48%]">
           <p className="mb-2 font-semibold">Goal (words):</p>
           <input
             type="number"
@@ -197,7 +197,7 @@ const SetGoal = () => {
             className="p-3 border outline-0 border-white/20 rounded-lg w-full bg-white/5 focus:border-purple-400 transition-colors"
           />
         </div>
-        <div className="w-full">
+        <div className="w-full lg:w-[48%] md:w-[48%]">
           <p className="mb-2 font-semibold">Words per minute:</p>
           <input
             type="number"
@@ -218,7 +218,7 @@ const SetGoal = () => {
       <button
         onClick={startReading}
         disabled={isUploading || words.length === 0}
-        className="w-full py-3 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg font-semibold transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+        className="w-full py-3 transition-all duration-200 bg-linear-to-br from-[#5F5DFC] to-[#B840F9] text-white hover:opacity-90 hover:font-bold hover:from-purple-700 hover:to-pink-700 rounded-lg font-semibold transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
       >
         {words.length === 0 ? 'Upload a book to start' : 'Start Reading Session'}
       </button>

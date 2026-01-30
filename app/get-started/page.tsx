@@ -13,7 +13,7 @@ const GetStarted = () => {
           <SetGoal />
           <AssessGoal />
         </section>
-        <section className="lg:w-[60%] w-full bg-linear-to-br from-gray-900 via-purple-900 to-gray-900">
+        <section className="lg:w-[60%] w-full">
           <Read />
         </section>
       </main>

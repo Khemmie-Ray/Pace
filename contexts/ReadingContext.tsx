@@ -6,6 +6,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
+import { toast } from "sonner";
 
 // Dummy text data to simulate parsed PDF
 const DUMMY_TEXT = `The power of consistent reading cannot be overstated. In today's fast-paced world, finding time to read can be challenging. However, with the right tools and accountability, anyone can develop a strong reading habit. Reading expands your knowledge, improves focus, and opens doors to new perspectives. The key is to start small and build momentum. Set achievable goals and track your progress. Celebrate small wins along the way. Remember that every word read is a step forward. Consistency matters more than speed. Find your comfortable pace and stick with it. Over time, you'll notice improvements in both speed and comprehension. The journey of a thousand books begins with a single word.`;
@@ -75,11 +76,11 @@ export const ReadingProvider: React.FC<{ children: ReactNode }> = ({
 
   const startReading = () => {
     if (!wordGoal || !wpm) {
-      alert("Please set both word goal and reading speed");
+      toast.warning("Please set both word goal and reading speed");
       return;
     }
     if (words.length === 0) {
-      alert("Please upload a file or load dummy data");
+      toast.warning("Please upload a file or load dummy data");
       return;
     }
     setHasStarted(true);

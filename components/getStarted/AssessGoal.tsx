@@ -16,7 +16,7 @@ const AssessGoal = () => {
   if (!hasStarted) return null;
 
   return (
-    <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 mt-6">
+    <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10">
       <h2 className="text-2xl font-bold font-montserrat mb-6 bg-linear-to-br from-purple-400 to-white bg-clip-text text-transparent">
         Session Analytics
       </h2>

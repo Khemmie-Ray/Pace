@@ -24,7 +24,7 @@ const Read = () => {
 
   if (!hasStarted) {
     return (
-      <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 h-[80vh] flex items-center justify-center">
+      <div className="bg-linear-to-br from-gray-900 via-purple-900 to-gray-900 backdrop-blur-lg rounded-2xl p-6 h-[80vh] flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-4 text-gray-400">
             Set your goals to begin reading
@@ -92,7 +92,7 @@ const Read = () => {
         </div>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10">
+      <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 my-4">
         <h3 className="text-xl font-bold mb-4 text-purple-400">Live Progress</h3>
         
         <div className="grid grid-cols-2 gap-4 text-center">

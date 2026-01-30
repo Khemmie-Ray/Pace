@@ -3,6 +3,7 @@ import { Montserrat, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,6 +32,7 @@ export default function RootLayout({
       >
         <div className="flex flex-col w-full h-screen font-inter">
           <Header />
+           <Toaster richColors={true} position="top-center" />
         {children}
         <Footer />
         </div>

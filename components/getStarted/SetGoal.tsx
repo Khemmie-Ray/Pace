@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from 'react';
 import { Upload, Loader2, CheckCircle, FileText } from 'lucide-react';
 import { useReading } from '@/contexts/ReadingContext';

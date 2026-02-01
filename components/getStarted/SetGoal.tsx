@@ -1,10 +1,9 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react';
-import { Upload, Loader2, CheckCircle, FileText } from 'lucide-react';
-import { useReading } from '@/contexts/ReadingContext';
-import { parsePDF } from '@/lib/pdf/pdfParser';
-import { toast } from 'sonner';
+import React, { useState } from "react";
+import { Upload, Loader2, CheckCircle, FileText } from "lucide-react";
+import { useReading } from "@/contexts/ReadingContext";
+import { toast } from "sonner";
 
 const SetGoal = () => {
   const {
@@ -22,7 +21,7 @@ const SetGoal = () => {
   } = useReading();
 
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState('');
+  const [uploadProgress, setUploadProgress] = useState("");
   const [parsedMetadata, setParsedMetadata] = useState<any>(null);
   const [chapters, setChapters] = useState<any[]>([]);
 
@@ -30,56 +29,60 @@ const SetGoal = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-
-    if (file.type !== 'application/pdf') {
-      toast.warning('Please upload a PDF file only');
-      e.target.value = '';
+    if (file.type !== "application/pdf") {
+      toast.warning("Please upload a PDF file only");
+      e.target.value = "";
       return;
     }
 
-    const maxSize = 10 * 1024 * 1024; 
+    const maxSize = 10 * 1024 * 1024;
     if (file.size > maxSize) {
-      toast.warning('File is too large. Please upload a PDF smaller than 10MB.');
-      e.target.value = '';
+      toast.warning(
+        "File is too large. Please upload a PDF smaller than 10MB.",
+      );
+      e.target.value = "";
       return;
     }
 
     setIsUploading(true);
-    setUploadProgress('Reading PDF...');
+    setUploadProgress("Reading PDF...");
 
     try {
-      setUploadProgress('Extracting text...');
+      setUploadProgress("Extracting text...");
+      const { parsePDF } = await import("@/lib/pdf/pdfParser");
       const parsed = await parsePDF(file);
 
-      setUploadProgress('Processing content...');
-      
+      setUploadProgress("Processing content...");
+
       setWords(parsed.words);
       setFileName(file.name);
       setParsedMetadata(parsed.metadata);
       setChapters(parsed.chapters);
 
-      setUploadProgress('Complete!');
-      
-    //   console.log('PDF parsed successfully:', {
-    //     pages: parsed.metadata.totalPages,
-    //     words: parsed.metadata.totalWords,
-    //     chapters: parsed.chapters.length,
-    //   });
+      setUploadProgress("Complete!");
 
-      const suggestedGoal = Math.min(1000, Math.floor(parsed.metadata.totalWords * 0.1));
+      //   console.log('PDF parsed successfully:', {
+      //     pages: parsed.metadata.totalPages,
+      //     words: parsed.metadata.totalWords,
+      //     chapters: parsed.chapters.length,
+      //   });
+
+      const suggestedGoal = Math.min(
+        1000,
+        Math.floor(parsed.metadata.totalWords * 0.1),
+      );
       setWordGoal(suggestedGoal.toString());
 
       setTimeout(() => {
-        setUploadProgress('');
+        setUploadProgress("");
         setIsUploading(false);
       }, 1500);
-
     } catch (error) {
-      console.error('PDF upload error:', error);
-      toast.error('Failed to parse PDF. Please try another file.');
+      console.error("PDF upload error:", error);
+      toast.error("Failed to parse PDF. Please try another file.");
       setIsUploading(false);
-      setUploadProgress('');
-      e.target.value = '';
+      setUploadProgress("");
+      e.target.value = "";
     }
   };
 
@@ -93,28 +96,38 @@ const SetGoal = () => {
 
       <div className="mb-6">
         <p className="mb-3 font-semibold">Upload Your eBook (PDF)</p>
-        
+
         <label className="block">
-          <div className={`border-2 border-dashed ${
-            isUploading ? 'border-purple-500 bg-purple-500/10' : 'border-white/20 hover:border-purple-400'
-          } transition-colors p-8 rounded-lg cursor-pointer bg-white/5 hover:bg-white/10`}>
+          <div
+            className={`border-2 border-dashed ${
+              isUploading
+                ? "border-purple-500 bg-purple-500/10"
+                : "border-white/20 hover:border-purple-400"
+            } transition-colors p-8 rounded-lg cursor-pointer bg-white/5 hover:bg-white/10`}
+          >
             <div className="flex flex-col items-center justify-center gap-3">
               {isUploading ? (
                 <>
                   <Loader2 className="w-12 h-12 text-purple-400 animate-spin" />
-                  <p className="text-center text-purple-300">{uploadProgress}</p>
+                  <p className="text-center text-purple-300">
+                    {uploadProgress}
+                  </p>
                 </>
               ) : fileName ? (
                 <>
                   <CheckCircle className="w-12 h-12 text-green-400" />
                   <p className="text-center text-green-300">{fileName}</p>
-                  <p className="text-xs text-gray-400">Click to upload different file</p>
+                  <p className="text-xs text-gray-400">
+                    Click to upload different file
+                  </p>
                 </>
               ) : (
                 <>
                   <Upload className="w-12 h-12 text-purple-400" />
                   <p className="text-center">Click to upload PDF file</p>
-                  <p className="text-sm text-gray-400">PDF files only (max 10MB)</p>
+                  <p className="text-sm text-gray-400">
+                    PDF files only (max 10MB)
+                  </p>
                 </>
               )}
             </div>
@@ -143,15 +156,19 @@ const SetGoal = () => {
             <FileText className="w-5 h-5 text-purple-400" />
             <p className="font-semibold text-purple-300">Book Information</p>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div>
               <p className="text-gray-400">Total Pages</p>
-              <p className="font-bold text-white">{parsedMetadata.totalPages}</p>
+              <p className="font-bold text-white">
+                {parsedMetadata.totalPages}
+              </p>
             </div>
             <div>
               <p className="text-gray-400">Total Words</p>
-              <p className="font-bold text-white">{parsedMetadata.totalWords.toLocaleString()}</p>
+              <p className="font-bold text-white">
+                {parsedMetadata.totalWords.toLocaleString()}
+              </p>
             </div>
             <div>
               <p className="text-gray-400">Chapters Found</p>
@@ -159,7 +176,9 @@ const SetGoal = () => {
             </div>
             <div>
               <p className="text-gray-400">Est. Reading Time</p>
-              <p className="font-bold text-white">{parsedMetadata.estimatedReadingTime} min</p>
+              <p className="font-bold text-white">
+                {parsedMetadata.estimatedReadingTime} min
+              </p>
             </div>
           </div>
 
@@ -170,7 +189,9 @@ const SetGoal = () => {
                 {chapters.map((chapter, idx) => (
                   <div key={idx} className="flex justify-between text-gray-300">
                     <span className="truncate">{chapter.title}</span>
-                    <span className="text-gray-500 ml-2">{chapter.wordCount} words</span>
+                    <span className="text-gray-500 ml-2">
+                      {chapter.wordCount} words
+                    </span>
                   </div>
                 ))}
               </div>
@@ -181,9 +202,11 @@ const SetGoal = () => {
 
       {words.length > 0 && (
         <div className="p-4 rounded-lg mb-6 border border-white/20 bg-white/5">
-          <p className="text-sm text-gray-300 mb-2">Preview (first 50 words):</p>
+          <p className="text-sm text-gray-300 mb-2">
+            Preview (first 50 words):
+          </p>
           <p className="text-sm leading-relaxed">
-            {words.slice(0, 50).join(' ')}...
+            {words.slice(0, 50).join(" ")}...
           </p>
         </div>
       )}
@@ -213,7 +236,8 @@ const SetGoal = () => {
 
       {wordGoal && wpm && (
         <p className="text-sm text-gray-300 mb-4">
-          Estimated time: {Math.ceil(parseInt(wordGoal) / parseInt(wpm))} minutes
+          Estimated time: {Math.ceil(parseInt(wordGoal) / parseInt(wpm))}{" "}
+          minutes
         </p>
       )}
 
@@ -222,7 +246,9 @@ const SetGoal = () => {
         disabled={isUploading || words.length === 0}
         className="w-full py-3 transition-all duration-200 bg-linear-to-br from-[#5F5DFC] to-[#B840F9] text-white hover:opacity-90 hover:font-bold hover:from-purple-700 hover:to-pink-700 rounded-lg font-semibold transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
       >
-        {words.length === 0 ? 'Upload a book to start' : 'Start Reading Session'}
+        {words.length === 0
+          ? "Upload a book to start"
+          : "Start Reading Session"}
       </button>
     </div>
   );

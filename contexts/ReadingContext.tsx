@@ -48,6 +48,7 @@ interface ReadingContextType {
   aiAnalysis: any;
   isAnalyzing: boolean;
   analyzeSession: () => Promise<void>;
+  goalAchieved: boolean;
 }
 
 const ReadingContext = createContext<ReadingContextType | undefined>(undefined);
@@ -74,6 +75,7 @@ export const ReadingProvider: React.FC<{ children: ReactNode }> = ({
 
   const [aiAnalysis, setAiAnalysis] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [goalAchieved, setGoalAchieved] = useState<boolean>(false);
 
   const loadDummyData = () => {
     const wordsArray = DUMMY_TEXT.split(/\s+/).filter(
@@ -85,11 +87,11 @@ export const ReadingProvider: React.FC<{ children: ReactNode }> = ({
 
   const startReading = () => {
     if (!wordGoal || !wpm) {
-      alert("Please set both word goal and reading speed");
+      toast.warning("Please set both word goal and reading speed");
       return;
     }
     if (words.length === 0) {
-      alert("Please upload a file or load dummy data");
+      toast.warning("Please upload a file or load dummy data");
       return;
     }
     setHasStarted(true);
@@ -110,7 +112,7 @@ export const ReadingProvider: React.FC<{ children: ReactNode }> = ({
             setIsPlaying(false);
             return prev;
           }
-          setWordsRead((prev) => prev + 1); // CHANGED: Increment wordsRead separately
+          setWordsRead((prev) => prev + 1);
           return next;
         });
       }, interval);
@@ -140,6 +142,19 @@ export const ReadingProvider: React.FC<{ children: ReactNode }> = ({
       setActualWPM(calculatedWPM);
     }
   }, [wordsRead, timeSpent]);
+
+  useEffect(() => {
+    if (!goalAchieved && wordGoal && wordsRead >= parseInt(wordGoal)) {
+      console.log("GOAL ACHIEVED!");
+      setGoalAchieved(true);
+      setIsPlaying(false);
+
+      toast.success("🎉 Goal Achieved! Great job!", {
+        duration: 5000,
+        description: `You read ${wordsRead} words! Click Play to continue or Reset to finish.`,
+      });
+    }
+  }, [wordsRead, wordGoal, goalAchieved]);
 
   const togglePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -189,7 +204,7 @@ export const ReadingProvider: React.FC<{ children: ReactNode }> = ({
   const goBack = () => {
     if (currentWordIndex > startWordIndex) {
       setCurrentWordIndex((prev) => prev - 1);
-      setWordsRead((prev) => Math.max(0, prev - 1)); 
+      setWordsRead((prev) => Math.max(0, prev - 1));
     }
   };
 
@@ -251,6 +266,7 @@ export const ReadingProvider: React.FC<{ children: ReactNode }> = ({
         aiAnalysis,
         isAnalyzing,
         analyzeSession,
+        goalAchieved,
       }}
     >
       {children}

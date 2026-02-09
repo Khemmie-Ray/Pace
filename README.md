@@ -77,7 +77,7 @@ Experiment: Prompt Variations
 Result: 40% cost reduction via Opik experiments
 ```
 
-![Opik Dashboard](https://res.cloudinary.com/dy7el0ucd/image/upload/v1770161687/Screenshot_2026-02-04_at_00.18.42_xdrczc.png)
+![Opik Dashboard](https://res.cloudinary.com/dy7el0ucd/image/upload/v1770610826/Screenshot_2026-02-09_at_01.59.13_dpacxh.png)
 *All AI calls logged: prompts, responses, tokens, latency, costs*
 
 ---
@@ -89,6 +89,12 @@ Result: 40% cost reduction via Opik experiments
 
 ![Coaching](https://res.cloudinary.com/dy7el0ucd/image/upload/v1770161687/Screenshot_2026-02-03_at_23.45.14_int6wr.png)
 *AI performance analysis*
+
+![Quiz](https://res.cloudinary.com/dy7el0ucd/image/upload/v1770610826/Screenshot_2026-02-09_at_01.55.47_dlqdiv.png)
+*AI comprehension quiz*
+
+![Evaluating](https://res.cloudinary.com/dy7el0ucd/image/upload/v1770610826/Screenshot_2026-02-08_at_22.16.13_k3bndg.png)
+*AI user's response evaluation*
 
 ---
 
